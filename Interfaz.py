@@ -10,8 +10,8 @@ class Application(Frame):
     def __init__(self):
         root = Tk()
         root.configure(background='brown')
-        root.minsize(width=800, height=800)
-        root.maxsize(width=800, height=800)
+        root.minsize(width=800, height=630)
+        root.maxsize(width=800, height=630)
         Frame.__init__(self, root)
         self.pack()
         self.createWidgets()
@@ -98,8 +98,8 @@ class Application(Frame):
         bottom.configure(background="BurlyWood")
         m.add(bottom)
 
-        parametros = partial(self.crearKakuro, 5, 5, bottom)
-        btnGenerar = Button(top, width=12, height=2, text="Generar", command=parametros)
+
+        btnGenerar = Button(top, width=12, height=2, text="Generar", command= lambda : self.crearKakuro(int(spnHorz.get()),int(spnVert.get()),bottom))
         btnGenerar.configure(background="Peru")
         btnGenerar.place(x=320, y=100)
 
