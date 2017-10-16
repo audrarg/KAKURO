@@ -29,8 +29,8 @@ class Application(Frame):
         clmn = 10
         m1 = 0
         m2 = 0
-        for i in range(0, filas):
-            for j in range(0, columnas):
+        for i in range(0, columnas):
+            for j in range(0, filas):
                 columna = Label(panel, text=str(matriz[m1][m2]), height=1, width=2, relief="solid")
                 columna.place(x=rw, y=clmn)
                 if matriz[m1][m2] == -1:
