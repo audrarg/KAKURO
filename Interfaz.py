@@ -29,17 +29,17 @@ class Application(Frame):
         m2 = 0
         for i in range(0, columnas):
             for j in range(0, filas):
-                columna = Label(panel, text=str(matriz[m1][m2]), height=1, width=2, relief="solid")
+                columna = Label(panel, text=str(matriz[m1][m2]), height=2, width=5, relief="solid")
                 columna.place(x=rw, y=clmn)
                 if matriz[m1][m2] == -1:
                     columna.configure(background="Black")
 
                 elif matriz[m1][m2] < 0:
-                    columna.configure(text='('+str((matriz[m1][m2]) * -1)+',)', fg="Maroon")
+                    columna.configure(text="(,"+str((matriz[m1][m2]) * -1)+')', fg="Maroon")
 
-                clmn += 22
+                clmn += 38
                 m1 += 1
-            rw += 21
+            rw += 42
             clmn = 10
             m1 = 0
             m2 += 1
