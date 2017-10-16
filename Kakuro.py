@@ -29,19 +29,44 @@ class Kakuro:
                                     indice = random.randrange(0, len(self.Diccionario.combinaciones), 2)
                                     self.RellenarFila(index, posicion, self.Diccionario.combinaciones[indice],
                                                       self.Diccionario.combinaciones[indice + 1])
-        self.PrintMatriz()
+        self.PrintMatriz(self.matriz)
+        self.SumasVerticales(self.matriz)
         return self.matriz
 
     def LlenarMatrix(self, filas, columnas):
         for i in range(filas):
             self.matriz.append([-1] * columnas)
 
-    '''
-    def SumasVerticales(kakuro):
-        for fila in kakuro:
-            for columna in fila:
-                if
-    '''
+    def SumasVerticales(self, resultado):
+        for indiceF, fila in enumerate(resultado):
+            array = [fila[indiceF] for fila in resultado]
+            iniciado = False
+            suma = 0
+            indice = 0
+            arraysuma = []
+            for index, elemento in enumerate(array):
+                if elemento < 0:
+                    iniciado = True
+                    if suma > 0 and len(arraysuma) > 1:
+                        if array[indice] > -1:
+                            resultado[indice][indiceF] = (suma, resultado[indice][indiceF])
+                        else:
+                            resultado[indice][indiceF] = (suma,)
+                    suma = 0
+                    indice = index
+                    arraysuma = []
+                if elemento > 0 and iniciado == True:
+                    suma += elemento
+                    arraysuma.append(elemento)
+                if index == len(array)-1 and len(arraysuma) > 1:
+                    if array[indice] != -1:
+                        resultado[indice][indiceF] = (suma, resultado[indice][indiceF])
+                    else:
+                        resultado[indice][indiceF] = (suma,)
+                    suma = 0
+                    arraysuma = []
+
+        self.PrintMatriz(resultado)
 
     def CeldasDisponibles(self, i):
         numero = 0
@@ -94,8 +119,8 @@ class Kakuro:
                 else:
                     return
 
-    def PrintMatriz(self):
-        for fila in self.matriz:
+    def PrintMatriz(self, matriz):
+        for fila in matriz:
             for columna in fila:
                 print columna,
             print

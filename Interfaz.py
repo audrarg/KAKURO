@@ -4,10 +4,9 @@ import Kakuro
 
 
 class Application(Frame):
-
     Kakuro = Kakuro.Kakuro()
 
-    def clean(self,frame):
+    def clean(self, frame):
         for widget in frame.winfo_children():
             widget.destroy()
 
@@ -19,7 +18,6 @@ class Application(Frame):
         Frame.__init__(self, root)
         self.pack()
         self.createWidgets()
-
 
     def crearKakuro(self, filas, columnas, panel):
 
@@ -45,7 +43,6 @@ class Application(Frame):
             clmn = 10
             m1 = 0
             m2 += 1
-
 
     def createWidgets(self):
 
@@ -101,9 +98,8 @@ class Application(Frame):
         bottom.configure(background="BurlyWood")
         m.add(bottom)
 
-        btnGenerar = Button(top, width=12, height=2, text="Generar", command= lambda : self.crearKakuro(int(spnHorz.get()),int(spnVert.get()),bottom))
+        btnGenerar = Button(top, width=12, height=2, text="Generar",
+                            command=lambda: self.crearKakuro(5, 5, bottom))
+        btnGenerar = Button(top, width=12, height=2, text="Generar",command=lambda: self.crearKakuro(int(spnHorz.get()), int(spnVert.get()), bottom))
         btnGenerar.configure(background="Peru")
         btnGenerar.place(x=320, y=100)
-
-
-
