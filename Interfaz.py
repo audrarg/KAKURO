@@ -35,7 +35,7 @@ class Application(Frame):
                     columna.configure(background="Black")
 
                 elif matriz[m1][m2] < 0:
-                    columna.configure(text=str((matriz[m1][m2]) * -1), fg="Maroon")
+                    columna.configure(text='('+str((matriz[m1][m2]) * -1)+',)', fg="Maroon")
 
                 clmn += 22
                 m1 += 1
