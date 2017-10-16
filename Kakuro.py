@@ -7,6 +7,7 @@ class Kakuro:
     Diccionario = DictionaryLib.Dictionary()
 
     def CrearKakuro(self, filas, columnas):
+        self.matriz = []
         self.LlenarMatrix(filas, columnas)
         for index, fila in enumerate(self.matriz):
             if index > 0:

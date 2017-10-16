@@ -10,8 +10,8 @@ class Application(Frame):
     def __init__(self):
         root = Tk()
         root.configure(background='brown')
-        root.minsize(width=800, height=600)
-        root.maxsize(width=800, height=600)
+        root.minsize(width=800, height=800)
+        root.maxsize(width=800, height=800)
         Frame.__init__(self, root)
         self.pack()
         self.createWidgets()
@@ -86,17 +86,19 @@ class Application(Frame):
         spnHorz = Spinbox(top, from_=10, to=20, width=5)
         spnHorz.configure(background="Bisque")
         spnHorz.place(x=125, y=40)
+        ##spnHorz.pack()
 
         spnVert = Spinbox(top, from_=10, to=20, width=5)
         spnVert.configure(background="Bisque")
         spnVert.place(x=235, y=40)
+        ##spnVert.pack()
 
         ##Panel inferior
         bottom = Label(m)
         bottom.configure(background="BurlyWood")
         m.add(bottom)
 
-        parametros = partial(self.crearKakuro, 20, 20, bottom)
+        parametros = partial(self.crearKakuro, 5, 5, bottom)
         btnGenerar = Button(top, width=12, height=2, text="Generar", command=parametros)
         btnGenerar.configure(background="Peru")
         btnGenerar.place(x=320, y=100)
