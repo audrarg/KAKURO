@@ -7,6 +7,10 @@ class Application(Frame):
 
     Kakuro = Kakuro.Kakuro()
 
+    def clean(self,frame):
+        for widget in frame.winfo_children():
+            widget.destroy()
+
     def __init__(self):
         root = Tk()
         root.configure(background='brown')
@@ -16,12 +20,10 @@ class Application(Frame):
         self.pack()
         self.createWidgets()
 
-    def printS(self, spinbox, spinbox2):
-        stri = spinbox.get(), "HORIZONTAL", spinbox2.get(), "VERTICAL"
-        print stri
 
     def crearKakuro(self, filas, columnas, panel):
 
+        self.clean(panel)
         matriz = self.Kakuro.CrearKakuro(filas, columnas)
         rw = 200
         clmn = 10
@@ -43,6 +45,7 @@ class Application(Frame):
             clmn = 10
             m1 = 0
             m2 += 1
+
 
     def createWidgets(self):
 
@@ -97,7 +100,6 @@ class Application(Frame):
         bottom = Label(m)
         bottom.configure(background="BurlyWood")
         m.add(bottom)
-
 
         btnGenerar = Button(top, width=12, height=2, text="Generar", command= lambda : self.crearKakuro(int(spnHorz.get()),int(spnVert.get()),bottom))
         btnGenerar.configure(background="Peru")
