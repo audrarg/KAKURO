@@ -13,8 +13,8 @@ class Application(Frame):
     def __init__(self):
         root = Tk()
         root.configure(background='brown')
-        root.minsize(width=800, height=630)
-        root.maxsize(width=800, height=630)
+        root.minsize(width=1205, height=950)
+        root.maxsize(width=1205, height=950)
         Frame.__init__(self, root)
         self.pack()
         self.createWidgets()

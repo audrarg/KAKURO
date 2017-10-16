@@ -38,7 +38,7 @@ class Kakuro:
             self.matriz.append([-1] * columnas)
 
     def SumasVerticales(self, resultado):
-        for indiceF, fila in enumerate(resultado):
+        for indiceF, fila in enumerate(resultado[1]):
             array = [fila[indiceF] for fila in resultado]
             iniciado = False
             suma = 0
