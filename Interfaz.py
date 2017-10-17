@@ -52,54 +52,59 @@ class Application(Frame):
         ##Panel Superior
         top = Label(m)
         top.configure(background="SaddleBrown")
-        top.configure(height=10)
+        top.configure(height=8)
         m.add(top)
 
         btnSubir = Button(top, width=12, height=2, text="Subir")
         btnSubir.configure(background="Peru")
-        btnSubir.place(x=200, y=100)
+        btnSubir.place(x=400, y=80)
 
         btnGuardar = Button(top, width=12, height=2, text="Guardar")
         btnGuardar.configure(background="Peru")
-        btnGuardar.place(x=440, y=100)
+        btnGuardar.place(x=640, y=80)
 
         lblTam = Label(top, text="Seleccione el tamano del Kakuro", fg="white")
         lblTam.configure(background="SaddleBrown")
-        lblTam.place(x=80, y=10)
+        lblTam.place(x=350, y=10)
 
         lblTam = Label(top, text="Cantidad de hilos", fg="white")
         lblTam.configure(background="SaddleBrown")
-        lblTam.place(x=400, y=10)
+        lblTam.place(x=660, y=10)
 
         lblTam = Label(top, text="Cantidad de forks", fg="white")
         lblTam.configure(background="SaddleBrown")
-        lblTam.place(x=400, y=40)
+        lblTam.place(x=660, y=40)
 
         lblHorz = Label(top, text="Horizontal", fg="white")
         lblHorz.configure(background="SaddleBrown")
-        lblHorz.place(x=60, y=40)
+        lblHorz.place(x=340, y=40)
 
         lblVert = Label(top, text="Vertical", fg="white")
         lblVert.configure(background="SaddleBrown")
-        lblVert.place(x=190, y=40)
+        lblVert.place(x=455, y=40)
 
         spnHorz = Spinbox(top, from_=10, to=20, width=5)
         spnHorz.configure(background="Bisque")
-        spnHorz.place(x=125, y=40)
-        ##spnHorz.pack()
+        spnHorz.place(x=400, y=40)
+
 
         spnVert = Spinbox(top, from_=10, to=20, width=5)
         spnVert.configure(background="Bisque")
-        spnVert.place(x=235, y=40)
-        ##spnVert.pack()
+        spnVert.place(x=500, y=40)
+
+        entryHilos = Entry(top)
+        entryHilos.configure(background="Bisque")
+        entryHilos.place(x=770, y=10)
+
+        entryForks = Entry(top)
+        entryForks.configure(background="Bisque")
+        entryForks.place(x=770, y=40)
 
         ##Panel inferior
         bottom = Label(m)
         bottom.configure(background="BurlyWood")
         m.add(bottom)
 
-        btnGenerar = Button(top, width=12, height=2, text="Generar",
-                            command=lambda: self.crearKakuro(5, 5, bottom))
         btnGenerar = Button(top, width=12, height=2, text="Generar",command=lambda: self.crearKakuro(int(spnHorz.get()), int(spnVert.get()), bottom))
         btnGenerar.configure(background="Peru")
-        btnGenerar.place(x=320, y=100)
+        btnGenerar.place(x=520, y=80)
