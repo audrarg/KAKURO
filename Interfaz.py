@@ -3,6 +3,7 @@ from Tkinter import *
 import tkFileDialog
 import Kakuro
 import time
+import threading
 
 
 class Application(Frame):
@@ -35,14 +36,22 @@ class Application(Frame):
     def __init__(self):
         root = Tk()
         root.configure(background='brown')
-        root.geometry('600x500')
+        root.geometry('1920x1080')
         root.title("Kakuro")
         Frame.__init__(self, root)
         self.pack()
         self.createWidgets(root)
 
+    def kakuro(self,filas,columnas):
+        kakuro = Kakuro.Kakuro()
+        kakuro.CrearKakuro(filas,columnas)
+
     def crearKakuro(self, filas, columnas, panel):
 
+        '''
+        for i in range(9,30):
+            self.Kakuro.CrearKakuro(i, i)
+        '''
         self.clean(panel)
         self.matriz = self.Kakuro.CrearKakuro(filas, columnas)
         rw = 20
@@ -56,8 +65,15 @@ class Application(Frame):
                 if self.matriz[m1][m2] == -1:
                     columna.configure(background="Black")
 
+                elif isinstance(self.matriz[m1][m2],int) == False:
+                    if len(self.matriz[m1][m2]) > 1:
+                        columna.configure(text=str((self.matriz[m1][m2][0]))+'\\'+str((self.matriz[m1][m2][1])*-1) , bg="Maroon")
+                    else:
+                        columna.configure(text=str((self.matriz[m1][m2][0]))+'\\',bg="Maroon")
+
+
                 elif self.matriz[m1][m2] < 0:
-                    columna.configure(text="(,"+str((self.matriz[m1][m2]) * -1)+')', bg="Maroon")
+                    columna.configure(text='\\'+str((self.matriz[m1][m2]) * -1), bg="Maroon")
 
                 clmn += 38
                 m1 += 1
@@ -65,6 +81,7 @@ class Application(Frame):
             clmn = 10
             m1 = 0
             m2 += 1
+
 
     def abrirKakuro(self, matrizKakuro, panel):
 

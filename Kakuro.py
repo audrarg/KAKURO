@@ -1,12 +1,15 @@
 import random
+import time
 import DictionaryLib
 
 
 class Kakuro:
+
     matriz = []
     Diccionario = DictionaryLib.Dictionary()
 
     def CrearKakuro(self, filas, columnas):
+        tiempo_Inicial = time.time()
         self.matriz = []
         self.LlenarMatrix(filas, columnas)
         for index, fila in enumerate(self.matriz):
@@ -21,16 +24,27 @@ class Kakuro:
                         self.RellenarFila(index, posicion, self.Diccionario.combinaciones[indice],
                                           self.Diccionario.combinaciones[indice + 1])
                         if index > 1:
-                            while self.Sumas() == False:
-                                self.LimpiarFila(index, posicion, len(self.Diccionario.combinaciones[indice + 1]) + 1)
-                                self.Diccionario.combinaciones.pop(indice)
-                                self.Diccionario.combinaciones.pop(indice)
-                                if len(self.Diccionario.combinaciones) > 0:
-                                    indice = random.randrange(0, len(self.Diccionario.combinaciones), 2)
-                                    self.RellenarFila(index, posicion, self.Diccionario.combinaciones[indice],
-                                                      self.Diccionario.combinaciones[indice + 1])
-        self.PrintMatriz(self.matriz)
+
+                            if self.Sumas() == 1:
+                                lista = self.Diccionario.combinaciones[indice + 1]
+                                for index, elemento in enumerate(lista):
+                                    lista[index]= -1
+                                    self.RellenarFila(index, posicion, -1, lista)
+                                    self.Diccionario.combinaciones.pop(indice)
+                                    self.Diccionario.combinaciones.pop(indice)
+                                break
+                            elif self.Sumas() == -1:
+                                while self.Sumas() == -1:
+                                    self.LimpiarFila(index, posicion, len(self.Diccionario.combinaciones[indice + 1]) + 1)
+                                    self.Diccionario.combinaciones.pop(indice)
+                                    self.Diccionario.combinaciones.pop(indice)
+                                    if len(self.Diccionario.combinaciones) > 0:
+                                        indice = random.randrange(0, len(self.Diccionario.combinaciones), 2)
+                                        self.RellenarFila(index, posicion, self.Diccionario.combinaciones[indice],
+                                                          self.Diccionario.combinaciones[indice + 1])
+        ##self.PrintMatriz(self.matriz)
         self.SumasVerticales(self.matriz)
+        print 'Tiempo de ejecucion: ',time.time() - tiempo_Inicial,' ',filas,'x',columnas
         return self.matriz
 
     def LlenarMatrix(self, filas, columnas):
@@ -66,7 +80,7 @@ class Kakuro:
                     suma = 0
                     arraysuma = []
 
-        self.PrintMatriz(resultado)
+        ##print self.matriz
 
     def CeldasDisponibles(self, i):
         numero = 0
@@ -91,10 +105,12 @@ class Kakuro:
                     column.append(self.matriz[index][index1])
                 else:
                     m = [i for i, x in enumerate(column) if column.count(x) > 1]
-                    if len(m) > 0:  ##and len(column) < 10:
-                        return False
+                    if len(m) > 0 and len(column) > 10:
+                        return 1
+                    elif len(m) > 0 and len(column) < 11: ##and len(column) < 10:
+                        return -1
                     column = []
-        return True
+        return 0
 
     def RellenarFila(self, i, j, numero, valores):
         iniciado = False
