@@ -1,20 +1,36 @@
+import pickle
 from Tkinter import *
-from functools import partial
+import tkFileDialog
 import Kakuro
+import time
 
 
 class Application(Frame):
     Kakuro = Kakuro.Kakuro()
     matriz = []
-    def ajustar(self,root,columnas,filas):
-        width = 25 + 2 + (5 * columnas) + 2
-        height = 2 + (2 * filas) + 2
-        root.geometry("+%d+%d" % (width, height))
 
+    def load(self,filename):
+        file = open(filename, "rb")
+        matriz2 = pickle.load(file)
+        file.close()
+        return matriz2
+
+
+    def save(self,filename, archivo):
+        file = open(filename, "wb")
+        pickle.dump(archivo, file)
+        file.close()
+        print "Archivo guardado"
+
+    def nombre(self,filas,columnas):
+        archivo = "Kakuro" + str(filas) + "x" + str(columnas) + time.strftime("%H-%M-%S") + ".p"
+        return archivo
 
     def clean(self, frame):
         for widget in frame.winfo_children():
             widget.destroy()
+
+
 
     def __init__(self):
         root = Tk()
@@ -25,7 +41,7 @@ class Application(Frame):
         self.pack()
         self.createWidgets(root)
 
-    def crearKakuro(self, filas, columnas, panel,root):
+    def crearKakuro(self, filas, columnas, panel):
 
         self.clean(panel)
         self.matriz = self.Kakuro.CrearKakuro(filas, columnas)
@@ -35,13 +51,13 @@ class Application(Frame):
         m2 = 0
         for i in range(0, columnas):
             for j in range(0, filas):
-                columna = Label(panel, text=str(matriz[m1][m2]), height=2, width=5, relief="solid")
+                columna = Label(panel, text=str(self.matriz[m1][m2]), height=2, width=5, relief="solid")
                 columna.place(x=rw, y=clmn)
-                if matriz[m1][m2] == -1:
+                if self.matriz[m1][m2] == -1:
                     columna.configure(background="Black")
 
-                elif matriz[m1][m2] < 0:
-                    columna.configure(text="(,"+str((matriz[m1][m2]) * -1)+')', bg="Maroon")
+                elif self.matriz[m1][m2] < 0:
+                    columna.configure(text="(,"+str((self.matriz[m1][m2]) * -1)+')', bg="Maroon")
 
                 clmn += 38
                 m1 += 1
@@ -49,7 +65,39 @@ class Application(Frame):
             clmn = 10
             m1 = 0
             m2 += 1
-        self.ajustar(root,columnas,filas)
+
+    def abrirKakuro(self, matrizKakuro, panel):
+
+        self.clean(panel)
+        rw = 20
+        clmn = 10
+        m1 = 0
+        m2 = 0
+        for i in range(0, len(matrizKakuro[0])):
+            for j in range(0, len(matrizKakuro)):
+                columna = Label(panel, text=str(matrizKakuro[m1][m2]), height=2, width=5, relief="solid")
+                columna.place(x=rw, y=clmn)
+                if matrizKakuro[m1][m2] == -1:
+                    columna.configure(background="Black")
+
+                elif matrizKakuro[m1][m2] < 0:
+                    columna.configure(text="(," + str((matrizKakuro[m1][m2]) * -1) + ')', bg="Maroon")
+
+                clmn += 38
+                m1 += 1
+            rw += 42
+            clmn = 10
+            m1 = 0
+            m2 += 1
+
+    def abrirArchivo(self,root,panel):
+        root.filename = tkFileDialog.askopenfilename(initialdir="C:\Users\Audra\KAKURO", title="Select file",filetypes=(("jpeg files", "*.p"), ("all files", "*.*")))
+        self.abrirKakuro(self.load(root.filename),panel)
+
+    def guardarArchivo(self):
+        filename = self.nombre(len(self.matriz),len(self.matriz[0]))
+        self.save(filename, self.matriz)
+        print filename
 
     def createWidgets(self,root):
 
@@ -62,13 +110,7 @@ class Application(Frame):
         top.configure(width=25)
         m.add(top)
 
-        btnSubir = Button(top, width=12, height=2, text="Cargar")
-        btnSubir.configure(background="Peru")
-        btnSubir.place(x=35, y=170)
 
-        btnGuardar = Button(top, width=12, height=2, text="Guardar")
-        btnGuardar.configure(background="Peru")
-        btnGuardar.place(x=35, y=290)
 
         lblTam = Label(top, text="Seleccione el tamano del Kakuro", fg="white")
         lblTam.configure(background="SaddleBrown")
@@ -113,6 +155,14 @@ class Application(Frame):
         bottom.configure(background="BurlyWood")
         m.add(bottom)
 
-        btnGenerar = Button(top, width=12, height=2, text="Generar",command=lambda: self.crearKakuro(int(spnHorz.get()), int(spnVert.get()), bottom, root))
+        btnGenerar = Button(top, width=12, height=2, text="Generar",command=lambda: self.crearKakuro(int(spnHorz.get()), int(spnVert.get()), bottom))
         btnGenerar.configure(background="Peru")
         btnGenerar.place(x=35, y=230)
+
+        btnSubir = Button(top, width=12, height=2, text="Cargar", command = lambda: self.abrirArchivo(root,bottom))
+        btnSubir.configure(background="Peru")
+        btnSubir.place(x=35, y=170)
+
+        btnGuardar = Button(top, width=12, height=2, text="Guardar", command = self.guardarArchivo)
+        btnGuardar.configure(background="Peru")
+        btnGuardar.place(x=35, y=290)
