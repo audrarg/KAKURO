@@ -1,12 +1,17 @@
 import random
 import time
 import DictionaryLib
+import threading
+import os, sys
+from multiprocessing import Process
 
 
 class Kakuro:
 
     matriz = []
     Diccionario = DictionaryLib.Dictionary()
+
+
 
     def CrearKakuro(self, filas, columnas):
         tiempo_Inicial = time.time()
@@ -42,7 +47,7 @@ class Kakuro:
                                         indice = random.randrange(0, len(self.Diccionario.combinaciones), 2)
                                         self.RellenarFila(index, posicion, self.Diccionario.combinaciones[indice],
                                                           self.Diccionario.combinaciones[indice + 1])
-        ##self.PrintMatriz(self.matriz)
+                    self.PrintMatriz(self.matriz)
         self.SumasVerticales(self.matriz)
         print 'Tiempo de ejecucion: ',time.time() - tiempo_Inicial,' ',filas,'x',columnas
         return self.matriz
@@ -51,8 +56,76 @@ class Kakuro:
         for i in range(filas):
             self.matriz.append([-1] * columnas)
 
+    def SumasVHilos(self, indiceF,fila, resultado):
+        array = [fila[indiceF] for fila in resultado]
+        iniciado = False
+        suma = 0
+        indice = 0
+        arraysuma = []
+        for index, elemento in enumerate(array):
+            if elemento < 0:
+                iniciado = True
+                if suma > 0 and len(arraysuma) > 1:
+                    if array[indice] > -1:
+                        resultado[indice][indiceF] = (suma, resultado[indice][indiceF])
+                    else:
+                        resultado[indice][indiceF] = (suma,)
+                suma = 0
+                indice = index
+                arraysuma = []
+            if elemento > 0 and iniciado == True:
+                suma += elemento
+                arraysuma.append(elemento)
+            if index == len(array) - 1 and len(arraysuma) > 1:
+                if array[indice] != -1:
+                    resultado[indice][indiceF] = (suma, resultado[indice][indiceF])
+                else:
+                    resultado[indice][indiceF] = (suma,)
+                suma = 0
+                arraysuma = []
+
+    def SumasForks(self, indiceF,fila, resultado):
+        array = [fila[indiceF] for fila in resultado]
+        iniciado = False
+        suma = 0
+        indice = 0
+        arraysuma = []
+        for index, elemento in enumerate(array):
+            if elemento < 0:
+                iniciado = True
+                if suma > 0 and len(arraysuma) > 1:
+                    if array[indice] > -1:
+                        resultado[indice][indiceF] = (suma, resultado[indice][indiceF])
+                    else:
+                        resultado[indice][indiceF] = (suma,)
+                suma = 0
+                indice = index
+                arraysuma = []
+            if elemento > 0 and iniciado == True:
+                suma += elemento
+                arraysuma.append(elemento)
+            if index == len(array) - 1 and len(arraysuma) > 1:
+                if array[indice] != -1:
+                    resultado[indice][indiceF] = (suma, resultado[indice][indiceF])
+                else:
+                    resultado[indice][indiceF] = (suma,)
+                suma = 0
+                arraysuma = []
+        os._exit(0)
+
+
     def SumasVerticales(self, resultado):
         for indiceF, fila in enumerate(resultado[1]):
+
+            p = Process(target=self.SumasForks, args=(indiceF,fila, resultado))
+            p.daemon = True
+            p.start()
+
+            '''
+            hilo = threading.Thread(target= self.SumasVHilos, args=(indiceF,fila, resultado))
+            hilo.start()
+
+            
             array = [fila[indiceF] for fila in resultado]
             iniciado = False
             suma = 0
@@ -79,6 +152,7 @@ class Kakuro:
                         resultado[indice][indiceF] = (suma,)
                     suma = 0
                     arraysuma = []
+            '''
 
         ##print self.matriz
 
